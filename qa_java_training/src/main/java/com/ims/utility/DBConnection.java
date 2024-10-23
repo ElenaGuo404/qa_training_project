@@ -1,5 +1,8 @@
 package com.ims.utility;
 
+import com.ims.model.Employee;
+import io.github.cdimascio.dotenv.Dotenv;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -10,9 +13,11 @@ public class DBConnection {
 
     public static void main(String[] args) {
         // Database connection variables
-        String url = "jdbc:mysql://localhost:3306/ims_db";
-        String username = "root";
-        String password = "root";
+        Dotenv dotenv = Dotenv.load();
+
+        String url = dotenv.get("DB_URL");
+        String username = dotenv.get("DB_USERNAME");
+        String password = dotenv.get("DB_PASSWORD");
 
 
         // Establishing the connection
