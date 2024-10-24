@@ -1,6 +1,5 @@
 package com.ims.test;
 
-import com.ims.utility.DBConnection;
 import com.ims.model.Employee;
 import com.ims.dao.EmployeeDAO;
 import org.junit.Test;
@@ -11,8 +10,6 @@ import static org.junit.Assert.*;
 
 public class TestMain {
 
-    DBConnection connection;
-    Employee employee;
     EmployeeDAO employeeDAO;
 
     @Test

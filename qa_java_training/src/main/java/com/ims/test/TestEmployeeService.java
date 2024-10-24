@@ -1,7 +1,6 @@
 package com.ims.test;
 
 import com.ims.service.EmployeeService;
-import com.ims.utility.DBConnection;
 import com.ims.model.Employee;
 import com.ims.dao.EmployeeDAO;
 import org.junit.Test;

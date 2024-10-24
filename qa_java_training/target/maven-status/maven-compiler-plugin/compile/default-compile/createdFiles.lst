@@ -1,5 +1,7 @@
 com\ims\dao\EmployeeDAO.class
 com\ims\model\Employee.class
+com\ims\test\TestEmployeeService.class
 com\ims\utility\DBConnection.class
+com\ims\ui\EmployeeCLI.class
 com\ims\service\EmployeeService.class
 com\ims\test\TestMain.class

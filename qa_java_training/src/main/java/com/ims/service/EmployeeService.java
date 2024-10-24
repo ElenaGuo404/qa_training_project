@@ -27,8 +27,9 @@ public class EmployeeService {
         employeeDAO.updateEmployee(employee);
     }
 
-    public void deleteEmployee(int employee_id) {
-        employeeDAO.deleteEmployee(employee_id);
+    public boolean deleteEmployee(int employee_id) {
+        return employeeDAO.deleteEmployee(employee_id);
+
     }
 
     public List<Employee> getAllEmployees() {
