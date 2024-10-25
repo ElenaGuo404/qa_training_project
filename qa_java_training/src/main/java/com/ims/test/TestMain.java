@@ -2,6 +2,8 @@ package com.ims.test;
 
 import com.ims.model.Employee;
 import com.ims.dao.EmployeeDAO;
+import com.ims.service.EmployeeService;
+import com.ims.utility.DatabaseConfig;
 import org.junit.Test;
 
 import java.util.List;
@@ -10,11 +12,16 @@ import static org.junit.Assert.*;
 
 public class TestMain {
 
-    EmployeeDAO employeeDAO;
+    private EmployeeDAO employeeDAO;
+    private EmployeeService employeeService;
+
+    public TestMain(DatabaseConfig dbConfig) {
+        employeeDAO = new EmployeeDAO(dbConfig);
+        this.employeeService = new EmployeeService(employeeDAO);
+    }
 
     @Test
     public void testCreateEmployee() {
-        employeeDAO = new EmployeeDAO();
         Employee employee = new Employee("Alice", "Hows", "alice.hows@example.com", "Finance", 7000.0f);
         employeeDAO.createEmployee(employee);
 
@@ -26,7 +33,6 @@ public class TestMain {
 
     @Test
     public void testUpdateEmployee() {
-        employeeDAO = new EmployeeDAO();
         Employee employee = new Employee("Mark", "Smith", "mark.smith@example.com", "Business", 55000.0f);
         employeeDAO.createEmployee(employee);
 
@@ -44,7 +50,6 @@ public class TestMain {
 
     @Test
     public void testDeleteEmployee() {
-        employeeDAO = new EmployeeDAO();
         Employee employee = new Employee("Alice", "Johnson", "alice.johnson@example.com", "Marketing", 65000.0f);
 //        employeeDao.createEmployee(employee);
 //
@@ -60,21 +65,17 @@ public class TestMain {
 
     @Test
     public void testGetAllEmployees() {
-        employeeDAO = new EmployeeDAO();
 
         Employee employee1 = new Employee("Tom", "Hanks", "tom.hanks@example.com", "Acting", 80000.0f);
         Employee employee2 = new Employee("Emma", "Watson", "emma.watson@example.com", "Acting", 75000.0f);
         employeeDAO.createEmployee(employee1);
         employeeDAO.createEmployee(employee2);
 
-        // Retrieve all employees
         List<Employee> employees = employeeDAO.getAllEmployees();
 
-        // Assertions to verify that all employees are retrieved
         assertNotNull(employees);
         assertEquals(4, employees.size());
 
-        // Check if the retrieved employees match the inserted employees
         assertTrue(employees.stream().anyMatch(emp -> emp.getFirstName().equals("Tom") && emp.getLastName().equals("Hanks")));
         assertTrue(employees.stream().anyMatch(emp -> emp.getFirstName().equals("Emma") && emp.getLastName().equals("Watson")));
     }

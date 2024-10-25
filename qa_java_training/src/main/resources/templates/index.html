@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Management</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        input, button { margin: 5px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+
+<h1>Employee Management</h1>
+
+<h2>Add Employee</h2>
+<input type="text" id="firstName" placeholder="First Name" required>
+<input type="text" id="lastName" placeholder="Last Name" required>
+<input type="email" id="email" placeholder="Email" required>
+<input type="text" id="department" placeholder="Department" required>
+<input type="number" id="salary" placeholder="Salary" required>
+<button onclick="addEmployee()">Add Employee</button>
+
+<h2>Employee Details</h2>
+<input type="number" id="employeeId" placeholder="Employee ID">
+<button onclick="getEmployee()">Get Employee</button>
+<button onclick="deleteEmployee()">Delete Employee</button>
+<button onclick="listEmployees()">List All Employees</button>
+
+<h2>All Employees</h2>
+<table id="employeeTable">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Department</th>
+        <th>Salary</th>
+    </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<script>
+    const apiUrl = 'http://localhost:8080/employees';
+
+    async function addEmployee() {
+        const employee = {
+            first_name: document.getElementById('firstName').value,
+            last_name: document.getElementById('lastName').value,
+            email: document.getElementById('email').value,
+            department: document.getElementById('department').value,
+            salary: document.getElementById('salary').value,
+        };
+
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(employee),
+        });
+
+        if (response.ok) {
+            alert('Employee added successfully!');
+            listEmployees();
+        } else {
+            alert('Failed to add employee.');
+        }
+    }
+
+    async function getEmployee() {
+        const id = document.getElementById('employeeId').value;
+        const response = await fetch(`${apiUrl}/${id}`);
+
+        if (response.ok) {
+            const employee = await response.json();
+            alert(`Employee: ${JSON.stringify(employee)}`);
+        } else {
+            alert('Employee not found.');
+        }
+    }
+
+    async function deleteEmployee() {
+        const id = document.getElementById('employeeId').value;
+        const response = await fetch(`${apiUrl}/${id}`, {
+            method: 'DELETE',
+        });
+
+        if (response.ok) {
+            alert('Employee deleted successfully!');
+            listEmployees();
+        } else {
+            alert('Failed to delete employee.');
+        }
+    }
+
+    async function listEmployees() {
+        const response = await fetch(apiUrl);
+        const employees = await response.json();
+
+        const tbody = document.querySelector('#employeeTable tbody');
+        tbody.innerHTML = '';
+
+        employees.forEach(employee => {
+            const row = tbody.insertRow();
+            row.insertCell(0).innerText = employee.id;
+            row.insertCell(1).innerText = employee.first_name;
+            row.insertCell(2).innerText = employee.last_name;
+            row.insertCell(3).innerText = employee.email;
+            row.insertCell(4).innerText = employee.department;
+            row.insertCell(5).innerText = employee.salary;
+        });
+    }
+</script>
+
+</body>
+</html>

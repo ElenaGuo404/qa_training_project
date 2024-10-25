@@ -2,9 +2,11 @@ package com.ims.service;
 
 import com.ims.dao.EmployeeDAO;
 import com.ims.model.Employee;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class EmployeeService {
 
     private final EmployeeDAO employeeDAO;
@@ -13,18 +15,19 @@ public class EmployeeService {
         this.employeeDAO = employeeDAO;
     }
 
-    public void createEmployee(Employee employee) {
+    public Employee createEmployee(Employee employee) {
         validateEmployee(employee);
         employeeDAO.createEmployee(employee);
+        return employee;
     }
 
     public Employee readEmployee(int employee_id) {
         return employeeDAO.readEmployee(employee_id);
     }
 
-    public void updateEmployee(Employee employee) {
+    public Employee updateEmployee(Employee employee) {
         validateEmployee(employee);
-        employeeDAO.updateEmployee(employee);
+        return employeeDAO.updateEmployee(employee);
     }
 
     public boolean deleteEmployee(int employee_id) {

@@ -2,7 +2,6 @@ package com.ims.dao;
 
 import com.ims.model.Employee;
 import com.ims.utility.DatabaseConfig;
-import io.github.cdimascio.dotenv.Dotenv;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -10,9 +9,11 @@ import java.util.List;
 
 public class EmployeeDAO {
 
-    DatabaseConfig dbConfig = new DatabaseConfig();
+    private final DatabaseConfig dbConfig;
 
-    // JDBC Connection
+    public EmployeeDAO(DatabaseConfig dbConfig) {
+        this.dbConfig = dbConfig;
+    }
 
     public void createEmployee(Employee employee) {
         String sql = "INSERT INTO employees (first_name, last_name, email, department, salary) VALUES (?, ?, ?, ?, ?)";
@@ -33,10 +34,11 @@ public class EmployeeDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException("Error creating employee: " + e.getMessage());
         }
     }
 
-    public Employee readEmployee(int employee_id){
+    public Employee readEmployee(int employee_id) {
         String sql = "SELECT * FROM employees WHERE employee_id = ?";
         Employee employee = null;
         try (Connection connection = dbConfig.getConnection();
@@ -51,15 +53,16 @@ public class EmployeeDAO {
                         resultSet.getString("department"),
                         resultSet.getFloat("salary")
                 );
-                employee.setEmployeeId(employee_id);
+                employee.setEmployeeId(resultSet.getInt("employee_id"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException("Error reading employee: " + e.getMessage());
         }
         return employee;
-    };
+    }
 
-    public void updateEmployee(Employee employee){
+    public Employee updateEmployee(Employee employee) {
         String sql = "UPDATE employees SET first_name = ?, last_name = ?, email = ?, department = ?, salary = ? WHERE employee_id = ?";
         try (Connection connection = dbConfig.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -72,23 +75,24 @@ public class EmployeeDAO {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException("Error updating employee: " + e.getMessage());
         }
-    };
+        return employee;
+    }
 
-    public boolean deleteEmployee(int employee_id){
+    public boolean deleteEmployee(int employee_id) {
         String sql = "DELETE FROM employees WHERE employee_id = ?";
         try (Connection connection = dbConfig.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, employee_id);
-            preparedStatement.executeUpdate();
-            return true;
+            return preparedStatement.executeUpdate() > 0; // Return true if at least one row was deleted
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException("Error deleting employee: " + e.getMessage());
         }
-        return false;
-    };
+    }
 
-    public List<Employee> getAllEmployees(){
+    public List<Employee> getAllEmployees() {
         List<Employee> employees = new ArrayList<>();
         String sql = "SELECT * FROM employees";
 
@@ -104,15 +108,13 @@ public class EmployeeDAO {
                         resultSet.getString("department"),
                         resultSet.getFloat("salary")
                 );
-                // Set the employeeId after retrieving from the database
                 employee.setEmployeeId(resultSet.getInt("employee_id"));
                 employees.add(employee);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException("Error retrieving employees: " + e.getMessage());
         }
         return employees;
-    };
-
-
+    }
 }

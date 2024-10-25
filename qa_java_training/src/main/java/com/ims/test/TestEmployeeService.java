@@ -3,6 +3,7 @@ package com.ims.test;
 import com.ims.service.EmployeeService;
 import com.ims.model.Employee;
 import com.ims.dao.EmployeeDAO;
+import com.ims.utility.DatabaseConfig;
 import org.junit.Test;
 
 import java.util.List;
@@ -12,7 +13,13 @@ import static org.junit.Assert.*;
 public class TestEmployeeService {
 
     private EmployeeService employeeService;
-    EmployeeDAO employeeDAO = new EmployeeDAO();
+    private EmployeeDAO employeeDAO;
+
+    public TestEmployeeService(DatabaseConfig dbConfig) {
+        employeeDAO = new EmployeeDAO(dbConfig);
+        this.employeeService = new EmployeeService(employeeDAO);
+    }
+
 
     @Test
     public void testCreateEmployee_ValidInput() {

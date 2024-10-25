@@ -9,8 +9,8 @@ public class main {
 
     public static void main(String[] args) throws SQLException {
         DatabaseConfig dbConfig = new DatabaseConfig();
-        EmployeeCLI cli = new EmployeeCLI();
-        dbConfig.getConnection();
+        EmployeeCLI cli = new EmployeeCLI(dbConfig);
+//        dbConfig.getConnection();
         cli.start();
     }
 }
