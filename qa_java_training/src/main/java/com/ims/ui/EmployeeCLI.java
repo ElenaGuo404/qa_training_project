@@ -80,12 +80,12 @@ public class EmployeeCLI {
                 System.out.print("Enter new first name (or press enter to keep current): ");
                 String firstName = scanner.nextLine();
                 if (!firstName.isEmpty()) {
-                    existingEmployee.setFirstName(firstName);
+                    existingEmployee.setFirst_name(firstName);
                 }
                 System.out.print("Enter new last name (or press enter to keep current): ");
                 String lastName = scanner.nextLine();
                 if (!lastName.isEmpty()) {
-                    existingEmployee.setLastName(lastName);
+                    existingEmployee.setLast_name(lastName);
                 }
                 System.out.print("Enter new email (or press enter to keep current): ");
                 String email = scanner.nextLine();

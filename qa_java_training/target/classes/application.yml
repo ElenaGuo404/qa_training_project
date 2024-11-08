@@ -1,8 +1,29 @@
-# MySQL database connection settings
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/ims_db
-    username: root
-    password: root
+    url: jdbc:mysql://localhost:3306/ims_db  # Change this if your database URL is different
+    username: root  # Replace with your actual database username
+    password: root  # Replace with your actual database password
     driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update  # Options: none, update, create, create-drop
+    show-sql: true  # Enables SQL logging in the console
+    properties:
+      hibernate:
+        format_sql: true  # Formats SQL for readability
+  server:
+    port: 8080  # Change this if you want a different port
+
+# Optionally, configure logging
+logging:
+  level:
+    root: INFO  # Set log level for root logger
+    com.ims: DEBUG  # Set log level for your package (adjust as needed)
+
+# Other optional configurations
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"  # Expose all management endpoints for monitoring
 

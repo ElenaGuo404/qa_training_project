@@ -8,6 +8,6 @@ public class HomeController {
 
     @GetMapping("/")
     public String home() {
-        return "index"; // This will look for index.html in src/main/resources/templates (if using Thymeleaf) or static.
+        return "index";
     }
 }

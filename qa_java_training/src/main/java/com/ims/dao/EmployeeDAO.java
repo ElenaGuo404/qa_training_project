@@ -2,11 +2,13 @@ package com.ims.dao;
 
 import com.ims.model.Employee;
 import com.ims.utility.DatabaseConfig;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class EmployeeDAO {
 
     private final DatabaseConfig dbConfig;
@@ -19,8 +21,8 @@ public class EmployeeDAO {
         String sql = "INSERT INTO employees (first_name, last_name, email, department, salary) VALUES (?, ?, ?, ?, ?)";
         try (Connection connection = dbConfig.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setString(1, employee.getFirstName());
-            preparedStatement.setString(2, employee.getLastName());
+            preparedStatement.setString(1, employee.getFirst_name());
+            preparedStatement.setString(2, employee.getLast_name());
             preparedStatement.setString(3, employee.getEmail());
             preparedStatement.setString(4, employee.getDepartment());
             preparedStatement.setFloat(5, employee.getSalary());
@@ -29,7 +31,7 @@ public class EmployeeDAO {
             // Retrieve the auto-generated employee ID
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    employee.setEmployeeId(generatedKeys.getInt(1));
+                    employee.setEmployee_id(generatedKeys.getInt(1));
                 }
             }
         } catch (SQLException e) {
@@ -39,13 +41,19 @@ public class EmployeeDAO {
     }
 
     public Employee readEmployee(int employee_id) {
+        System.out.println("1-----------------");
+
         String sql = "SELECT * FROM employees WHERE employee_id = ?";
         Employee employee = null;
         try (Connection connection = dbConfig.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            System.out.println("2-----------------");
+
             preparedStatement.setInt(1, employee_id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
+                System.out.println("3-----------------");
+
                 employee = new Employee(
                         resultSet.getString("first_name"),
                         resultSet.getString("last_name"),
@@ -53,7 +61,9 @@ public class EmployeeDAO {
                         resultSet.getString("department"),
                         resultSet.getFloat("salary")
                 );
-                employee.setEmployeeId(resultSet.getInt("employee_id"));
+                System.out.println("4-----------------");
+
+                employee.setEmployee_id(resultSet.getInt("employee_id"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -66,12 +76,12 @@ public class EmployeeDAO {
         String sql = "UPDATE employees SET first_name = ?, last_name = ?, email = ?, department = ?, salary = ? WHERE employee_id = ?";
         try (Connection connection = dbConfig.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setString(1, employee.getFirstName());
-            preparedStatement.setString(2, employee.getLastName());
+            preparedStatement.setString(1, employee.getFirst_name());
+            preparedStatement.setString(2, employee.getLast_name());
             preparedStatement.setString(3, employee.getEmail());
             preparedStatement.setString(4, employee.getDepartment());
             preparedStatement.setFloat(5, employee.getSalary());
-            preparedStatement.setInt(6, employee.getEmployeeId());
+            preparedStatement.setInt(6, employee.getEmployee_id());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -108,7 +118,7 @@ public class EmployeeDAO {
                         resultSet.getString("department"),
                         resultSet.getFloat("salary")
                 );
-                employee.setEmployeeId(resultSet.getInt("employee_id"));
+                employee.setEmployee_id(resultSet.getInt("employee_id"));
                 employees.add(employee);
             }
         } catch (SQLException e) {

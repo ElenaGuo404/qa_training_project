@@ -3,6 +3,8 @@ package com.ims.controller;
 import com.ims.model.Employee;
 import com.ims.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,18 +22,20 @@ public class EmployeeController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public Employee addEmployee(@RequestBody Employee employee) {
         return employeeService.createEmployee(employee);
     }
 
     @GetMapping("/{employee_id}")
-    public Employee getEmployee(@PathVariable int employee_id) {
-        return employeeService.readEmployee(employee_id);
+    public ResponseEntity<Employee> getEmployee(@PathVariable int employee_id) {
+        Employee employee = employeeService.readEmployee(employee_id);
+        return employee != null ? ResponseEntity.ok(employee) : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @PutMapping("/{employee_id}")
     public Employee updateEmployee(@PathVariable int employee_id, @RequestBody Employee employee) {
-        employee.setEmployeeId(employee_id);
+        employee.setEmployee_id(employee_id);
         return employeeService.updateEmployee(employee);
     }
 

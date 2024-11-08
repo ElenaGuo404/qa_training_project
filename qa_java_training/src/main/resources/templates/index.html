@@ -17,15 +17,15 @@
 <h1>Employee Management</h1>
 
 <h2>Add Employee</h2>
-<input type="text" id="firstName" placeholder="First Name" required>
-<input type="text" id="lastName" placeholder="Last Name" required>
+<input type="text" id="first_name" placeholder="First Name" required>
+<input type="text" id="last_name" placeholder="Last Name" required>
 <input type="email" id="email" placeholder="Email" required>
 <input type="text" id="department" placeholder="Department" required>
 <input type="number" id="salary" placeholder="Salary" required>
 <button onclick="addEmployee()">Add Employee</button>
 
 <h2>Employee Details</h2>
-<input type="number" id="employeeId" placeholder="Employee ID">
+<input type="number" id="employee_id" placeholder="Employee ID">
 <button onclick="getEmployee()">Get Employee</button>
 <button onclick="deleteEmployee()">Delete Employee</button>
 <button onclick="listEmployees()">List All Employees</button>
@@ -49,9 +49,10 @@
     const apiUrl = 'http://localhost:8080/employees';
 
     async function addEmployee() {
+    try {
         const employee = {
-            first_name: document.getElementById('firstName').value,
-            last_name: document.getElementById('lastName').value,
+            first_name: document.getElementById('first_name').value,
+            last_name: document.getElementById('last_name').value,
             email: document.getElementById('email').value,
             department: document.getElementById('department').value,
             salary: document.getElementById('salary').value,
@@ -69,35 +70,59 @@
             alert('Employee added successfully!');
             listEmployees();
         } else {
-            alert('Failed to add employee.');
+            const error = await response.json();
+            alert(`Failed to add employee: ${error.message}`);
         }
+    } catch (error) {
+        console.error('Error adding employee:', error);
+        alert('An unexpected error occurred.');
     }
+}
 
-    async function getEmployee() {
-        const id = document.getElementById('employeeId').value;
-        const response = await fetch(`${apiUrl}/${id}`);
 
-        if (response.ok) {
-            const employee = await response.json();
-            alert(`Employee: ${JSON.stringify(employee)}`);
-        } else {
-            alert('Employee not found.');
-        }
+<!--    async function getEmployee() {-->
+<!--    const employee_id = document.getElementById('employee_id').value;-->
+<!--    const response = await fetch(`${apiUrl}/${employee_id}`);-->
+<!--    console.log(response);-->
+
+<!--    if (response.ok) {-->
+<!--        console.log("hhhh");-->
+<!--        const employee = await response.json();-->
+<!--        alert(`Employee: ${JSON.stringify(employee)}`);-->
+<!--    } else {-->
+<!--        alert('Employee not found.');-->
+<!--    }-->
+<!--}-->
+
+async function getEmployee() {
+    const employee_id = document.getElementById('employee_id').value;
+    const url = `${apiUrl}/${employee_id}`;
+    console.log("Fetching URL:", url); // Log URL for verification
+    const response = await fetch(url);
+    console.log("Response:", response); // Log response for debugging
+
+    if (response.ok) {
+        const employee = await response.json();
+        alert(`Employee: ${JSON.stringify(employee)}`);
+    } else {
+        alert('Employee not found.');
     }
+}
 
-    async function deleteEmployee() {
-        const id = document.getElementById('employeeId').value;
-        const response = await fetch(`${apiUrl}/${id}`, {
-            method: 'DELETE',
-        });
 
-        if (response.ok) {
-            alert('Employee deleted successfully!');
-            listEmployees();
-        } else {
-            alert('Failed to delete employee.');
-        }
+async function deleteEmployee() {
+    const employee_id = document.getElementById('employee_id').value;
+    const response = await fetch(`${apiUrl}/${employee_id}`, {
+        method: 'DELETE',
+    });
+
+    if (response.ok) {
+        alert('Employee deleted successfully!');
+        listEmployees();
+    } else {
+        alert('Failed to delete employee.');
     }
+}
 
     async function listEmployees() {
         const response = await fetch(apiUrl);
@@ -108,7 +133,7 @@
 
         employees.forEach(employee => {
             const row = tbody.insertRow();
-            row.insertCell(0).innerText = employee.id;
+            row.insertCell(0).innerText = employee.employee_id;
             row.insertCell(1).innerText = employee.first_name;
             row.insertCell(2).innerText = employee.last_name;
             row.insertCell(3).innerText = employee.email;

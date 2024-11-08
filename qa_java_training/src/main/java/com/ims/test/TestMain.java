@@ -25,10 +25,10 @@ public class TestMain {
         Employee employee = new Employee("Alice", "Hows", "alice.hows@example.com", "Finance", 7000.0f);
         employeeDAO.createEmployee(employee);
 
-        Employee retrieved = employeeDAO.readEmployee(employee.getEmployeeId());
+        Employee retrieved = employeeDAO.readEmployee(employee.getEmployee_id());
         assertNotNull(retrieved);
-        assertEquals("Alice", retrieved.getFirstName());
-        assertEquals("Hows",retrieved.getLastName());
+        assertEquals("Alice", retrieved.getFirst_name());
+        assertEquals("Hows",retrieved.getLast_name());
     }
 
     @Test
@@ -36,14 +36,14 @@ public class TestMain {
         Employee employee = new Employee("Mark", "Smith", "mark.smith@example.com", "Business", 55000.0f);
         employeeDAO.createEmployee(employee);
 
-        employee.setFirstName("Markus");
+        employee.setFirst_name("Markus");
         employee.setEmail("mark.smith.new@example.com");
         employeeDAO.updateEmployee(employee);
 
-        Employee updatedEmployee = employeeDAO.readEmployee(employee.getEmployeeId());
+        Employee updatedEmployee = employeeDAO.readEmployee(employee.getEmployee_id());
 
         assertNotNull(updatedEmployee);
-        assertEquals("Markus", updatedEmployee.getFirstName());
+        assertEquals("Markus", updatedEmployee.getFirst_name());
         assertEquals("mark.smith.new@example.com", updatedEmployee.getEmail());
         assertEquals("Business", updatedEmployee.getDepartment());
     }
@@ -58,7 +58,7 @@ public class TestMain {
 
         employeeDAO.deleteEmployee(14);
 
-        Employee deleted = employeeDAO.readEmployee(employee.getEmployeeId());
+        Employee deleted = employeeDAO.readEmployee(employee.getEmployee_id());
 
         assertNull(deleted);
     }
@@ -76,8 +76,8 @@ public class TestMain {
         assertNotNull(employees);
         assertEquals(4, employees.size());
 
-        assertTrue(employees.stream().anyMatch(emp -> emp.getFirstName().equals("Tom") && emp.getLastName().equals("Hanks")));
-        assertTrue(employees.stream().anyMatch(emp -> emp.getFirstName().equals("Emma") && emp.getLastName().equals("Watson")));
+        assertTrue(employees.stream().anyMatch(emp -> emp.getFirst_name().equals("Tom") && emp.getLast_name().equals("Hanks")));
+        assertTrue(employees.stream().anyMatch(emp -> emp.getFirst_name().equals("Emma") && emp.getLast_name().equals("Watson")));
     }
 
 

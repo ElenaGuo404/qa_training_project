@@ -6,8 +6,6 @@ import com.ims.dao.EmployeeDAO;
 import com.ims.utility.DatabaseConfig;
 import org.junit.Test;
 
-import java.util.List;
-
 import static org.junit.Assert.*;
 
 public class TestEmployeeService {
@@ -26,7 +24,7 @@ public class TestEmployeeService {
         employeeService = new EmployeeService(employeeDAO);
         Employee employee = new Employee("John", "Doe", "john.doe@example.com", "Engineering", 50000.0f);
         employeeService.createEmployee(employee);
-        assertNotNull(employee.getEmployeeId()); // Ensure the employee was created with an ID
+        assertNotNull(employee.getEmployee_id()); // Ensure the employee was created with an ID
     }
 
     @Test

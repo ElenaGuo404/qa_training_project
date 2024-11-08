@@ -4,7 +4,7 @@ CREATE SCHEMA IF NOT EXISTS `ims_db`;
 
 USE ims_db;
 
-CREATE TABLE IF NOT EXISTS `ims_db.employees` (
+CREATE TABLE IF NOT EXISTS `employees` (
     `employee_id` INT NOT NULL AUTO_INCREMENT,
     `first_name` VARCHAR(55) NOT NULL,
     `last_name` VARCHAR(55) NOT NULL,
@@ -13,4 +13,4 @@ CREATE TABLE IF NOT EXISTS `ims_db.employees` (
     `salary` FLOAT NOT NULL,
     PRIMARY KEY (`employee_id`)
 
-)
+);

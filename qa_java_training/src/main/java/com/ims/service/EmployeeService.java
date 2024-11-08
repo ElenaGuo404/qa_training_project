@@ -2,19 +2,24 @@ package com.ims.service;
 
 import com.ims.dao.EmployeeDAO;
 import com.ims.model.Employee;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmployeeService {
 
-    private final EmployeeDAO employeeDAO;
+    @Autowired
+    private EmployeeDAO employeeDAO;
 
     public EmployeeService(EmployeeDAO employeeDAO) {
         this.employeeDAO = employeeDAO;
     }
 
+    @Transactional
     public Employee createEmployee(Employee employee) {
         validateEmployee(employee);
         employeeDAO.createEmployee(employee);
@@ -24,6 +29,10 @@ public class EmployeeService {
     public Employee readEmployee(int employee_id) {
         return employeeDAO.readEmployee(employee_id);
     }
+//    @Transactional(readOnly = true)
+//    public Optional<Employee> readEmployee(int employeeId) {
+//        return Optional.ofNullable(employeeDAO.readEmployee(employeeId));
+//    }
 
     public Employee updateEmployee(Employee employee) {
         validateEmployee(employee);
@@ -32,7 +41,6 @@ public class EmployeeService {
 
     public boolean deleteEmployee(int employee_id) {
         return employeeDAO.deleteEmployee(employee_id);
-
     }
 
     public List<Employee> getAllEmployees() {
@@ -41,10 +49,10 @@ public class EmployeeService {
 
     // Validation
     private void validateEmployee(Employee employee) {
-        if (employee.getFirstName() == null || employee.getFirstName().isEmpty()) {
+        if (employee.getFirst_name() == null || employee.getFirst_name().isEmpty()) {
             throw new IllegalArgumentException("First name cannot be null or empty.");
         }
-        if (employee.getLastName() == null || employee.getLastName().isEmpty()) {
+        if (employee.getLast_name() == null || employee.getLast_name().isEmpty()) {
             throw new IllegalArgumentException("Last name cannot be null or empty.");
         }
         if (employee.getEmail() == null || !employee.getEmail().matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {

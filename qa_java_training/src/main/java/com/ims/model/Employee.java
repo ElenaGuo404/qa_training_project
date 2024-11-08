@@ -1,34 +1,39 @@
 package com.ims.model;
 
+import jakarta.persistence.*;
+@Entity
 public class Employee {
 
-    private int employeeId;     // changed variable name for camelCase
-    private String firstName;    // changed variable name for camelCase
-    private String lastName;     // changed variable name for camelCase
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int employee_id;
+    private String first_name;
+    private String last_name;
+
     private String email;
     private String department;
     private Float salary;
 
     // Constructor
-    public Employee( String firstName, String lastName, String email, String department, Float salary) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public Employee(String first_name, String last_name, String email, String department, Float salary) {
+        this.first_name = first_name;
+        this.last_name = last_name;
         this.email = email;
         this.department = department;
         this.salary = salary;
     }
 
     // Getters
-    public int getEmployeeId() {
-        return employeeId;
+    public int getEmployee_id() {
+        return employee_id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFirst_name() {
+        return first_name;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getLast_name() {
+        return last_name;
     }
 
     public String getEmail() {
@@ -44,16 +49,16 @@ public class Employee {
     }
 
     // Setters
-    public void setEmployeeId(int employeeId) {
-        this.employeeId = employeeId;
+    public void setEmployee_id(int employee_id) {
+        this.employee_id = employee_id;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setFirst_name(String first_name) {
+        this.first_name = first_name;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setLast_name(String last_name) {
+        this.last_name = last_name;
     }
 
     public void setEmail(String email) {
@@ -71,9 +76,9 @@ public class Employee {
     @Override
     public String toString() {
         return "Employee{" +
-                "employee_id=" + employeeId +
-                ", first_name='" + firstName + '\'' +
-                ", last_name='" + lastName + '\'' +
+                "employee_id=" + employee_id +
+                ", first_name='" + first_name + '\'' +
+                ", last_name='" + last_name + '\'' +
                 ", email='" + email + '\'' +
                 ", department='" + department + '\'' +
                 ", salary=" + salary +
